@@ -1,6 +1,6 @@
 from Time import __init__
 
-inst_1 = __init__(21,09,56)
+inst_1 = __init__(21,09,59)
 inst_1.is_valid_time()
 
 inst_2 = __init__(23,59,60)
