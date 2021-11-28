@@ -3,8 +3,10 @@ screen = turtle.Screen()
 screen.setup(400,400)
 
 t=turtle.Turtle()
+turtle.title("")
 turtle.shape("turtle")
 turtle.bgcolor("white")
+
 
 x=0
 y=1
