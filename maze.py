@@ -1,7 +1,10 @@
 import turtle
 screen = turtle.Screen()
-screen.setup(?)
+screen.setup(400,400)
 
+t=turtle.Turtle()
+turtle.shape("turtle")
+turtle.bgcolor("white")
 
 x=0
 y=1
