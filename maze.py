@@ -1,85 +1,53 @@
-import turtle
-screen = turtle.Screen()
-screen.setup(400,400)
+from tkinter import *
+from tkinter import messagebox
 
-t=turtle.Turtle()
-turtle.title("maze")
-turtle.shape("turtle")
-turtle.bgcolor("white")
+def player_move(event):
+    global x, y
+    if event.keysym == "Up" and maze[y-1][x] != 1:
+        canvas.move(player, 0, -70)
+        y -= 1
+    elif event.keysym == "Down" and maze[y+1][x] != 1:
+        canvas.move(player, 0, 70)
+        y += 1
+    elif event.keysym == "Left" and maze[y][x-1] != 1:
+        canvas.move(player, -70, 0)
+        x -= 1
+    elif event.keysym == "Right" and maze[y][x+1] != 1:
+        canvas.move(player, 70, 0)
+        x += 1
+    if maze[y][x] ==2:
+        messagebox.showinfo("미션 성공", "목적지에 도착! 축하합니다!")
 
-turtle.done()
+window = Tk()
+window.title("미로 그리기")
 
-X=0
-Y=1
-cubesize=20
+canvas = Canvas(window,width=700, height=490, bg="#FFF8E5")
+canvas.pack()
 
 maze=[
     [1,1,1,1,1,1,1,1,1,1],
-    [0,0,0,0,0,0,0,1,1,1],
-    [1,1,0,1,1,0,0,0,1,1],
-    [1,1,0,1,1,1,1,0,1,1],
-    [1,1,0,1,1,1,1,0,1,1],
-    [1,0,0,1,1,1,1,0,0,0],
-    [1,1,1,1,1,1,0,0,1,1],
-    [1,0,0,0,0,0,0,1,1,1],
-    [1,0,1,0,1,1,1,1,1,1],
-    [1,0,1,0,0,0,0,0,1,1],
-    [1,0,1,1,1,1,1,0,1,1],
-    [1,1,1,1,1,1,1,0,1,1],
-    [1,1,1,1,1,1,1,0,1,1]]
-mazelen = len(maze)
+    [1,0,0,1,1,1,2,0,0,1],
+    [1,1,0,1,1,1,1,1,0,1],
+    [1,0,0,1,0,0,0,1,0,1],
+    [1,0,1,0,0,1,0,1,0,1],
+    [1,0,0,0,1,1,0,0,0,1],
+    [1,1,1,1,1,1,1,1,1,1]
+]
 
+for y in range(7):
+    for x in range(10):
+        if maze[y][x] == 1:
+            canvas.create_rectangle(x*70, y*70, (x+1)*70, (y+1)*70,
+                                    fill="#C6D57E", outline="white")
+x = 1
+y = 1
 
-def getx(x):
-    global cubesize
-    global mazelen
-    return (x-mazelen/2)*cubesize
+img_end = PhotoImage(file="goal_img.png")
+end = canvas.create_image(455, 105, image=img_end)
 
-def gety(y):
-    global cubesize
-    global mazelen
-    return -(y-mazelen/2)*cubesize
+player_img = PhotoImage(file="player_img.png")
+player = canvas.create_image(105, 105, image=player_img)
 
-def draw_wall(x,y):
-    x=getx(x)
-    y=gety(y)
-    t.penup()
-    t.goto(x,y)
+canvas.bind_all("<KeyPress>", player_move)
 
-def draw_maze(maze):
-    t.penup()
-    t.goto(getx(0),gety(0))
-    t.pendown()
-
-    for y in range(len(maze)):
-        for x in range(len(maze[y])):
-            if(maze[y][x]==1):
-                draw_wall(X,Y)
-
-def isWin(x,y):
-    print("x",x,"y",y)
-    if(x==8):
-        if(y==9):
-            t.write("you win")
-
-def turn_right():
-    global maze
-    global X
-    global Y
-    if(X<9):
-        if(maze[Y][X+1]==0):
-            X=X+1
-            t.seth(0)
-            t.goto(getx(X),gety(Y))
-            isWin(X,Y)
-
-def turn_left():
-    global maze
-    global X
-    global Y
-    if(X>0):
-        if(maze[Y][X-1]==0):
-            X=X-1
-            t.seth(180)
-            t.goto(getx(X),gety(Y))
-            isWin(X,Y)
+window.mainloop()
